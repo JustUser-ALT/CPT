@@ -8,6 +8,12 @@ local U = _G.CPT_Utils
 local S = _G.CPT_State
 local P = _G.CPT_Preview
 
+if not U or not S or not P then
+    warn("[CPT_3DPreview] Missing modules: U="..tostring(U).." S="..tostring(S).." P="..tostring(P))
+    _G.CPT_3DPreview = {}
+    return
+end
+
 -- Aliases for Utils functions
 local tableToCF     = function(...) return U.tableToCF(...) end
 local cfToTable     = function(...) return U.cfToTable(...) end
