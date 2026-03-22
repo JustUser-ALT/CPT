@@ -132,7 +132,7 @@ buildsDropdown=SLTab:Dropdown({
     end,
 })
 SLTab:Button({Title="Refresh", Callback=refreshDropdown})
-SLTab:Button({Title="Open 3D Preview", Icon="eye", Callback=function()
+SLTab:Button({Title="Open 3D Preview", Callback=function()
     print("[3DPreview] button clicked, selectedBuild:", S.selectedBuild)
     if not S.selectedBuild then csStatus("Select a build first!"); return end
     local vp = _G.CPT_3DPreview
