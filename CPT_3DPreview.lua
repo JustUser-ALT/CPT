@@ -669,4 +669,5 @@ local function openPreviewGui(buildArg)
     cancelBtn.MouseButton1Click:Connect(cleanupAndClose)
 end
 
+V.openPreviewGui = openPreviewGui
 _G.CPT_3DPreview = V
