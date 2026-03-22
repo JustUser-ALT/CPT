@@ -131,19 +131,11 @@ buildsDropdown=SLTab:Dropdown({
         end
     end,
 })
-SLTab:Button({Title="Refresh", Callback=refreshDropdown})
 SLTab:Button({Title="Open 3D Preview", Callback=function()
-    print("[3DPreview] button clicked, selectedBuild:", S.selectedBuild)
-    if not S.selectedBuild then csStatus("Select a build first!"); return end
-    local vp = _G.CPT_3DPreview
-    print("[3DPreview] VP:", vp, "func:", vp and vp.openPreviewGui)
-    if vp and vp.openPreviewGui then
-        local ok, err = pcall(vp.openPreviewGui, S.selectedBuild)
-        if not ok then print("[3DPreview] error:", err) end
-    else
-        csStatus("3D Preview not loaded!")
-    end
+    if not S.selectedBuild then csStatus("No build selected"); return end
+    _G.CPT_3DPreview.openPreviewGui(S.selectedBuild)
 end})
+SLTab:Button({Title="Refresh", Callback=refreshDropdown})
 SLTab:Button({Title="Delete Selected", Callback=function()
     if not S.selectedBuild then return end
     local builds=U.loadBuilds()
