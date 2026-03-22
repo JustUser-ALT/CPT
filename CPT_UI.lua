@@ -134,7 +134,12 @@ buildsDropdown=SLTab:Dropdown({
 SLTab:Button({Title="Refresh", Callback=refreshDropdown})
 SLTab:Button({Title="Open 3D Preview", Icon="eye", Callback=function()
     if not S.selectedBuild then csStatus("Select a build first!"); return end
-    VP.openPreviewGui(S.selectedBuild)
+    local vp = _G.CPT_3DPreview
+    if vp and vp.openPreviewGui then
+        vp.openPreviewGui(S.selectedBuild)
+    else
+        csStatus("3D Preview not loaded!")
+    end
 end})
 SLTab:Button({Title="Delete Selected", Callback=function()
     if not S.selectedBuild then return end
