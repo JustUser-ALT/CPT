@@ -8,7 +8,24 @@ local U = _G.CPT_Utils
 local S = _G.CPT_State
 local P = _G.CPT_Preview
 
+-- Aliases for Utils functions
+local tableToCF     = function(...) return U.tableToCF(...) end
+local cfToTable     = function(...) return U.cfToTable(...) end
+local findBlockInRS = function(...) return U.findBlockInRS(...) end
+local getModelPivot = function(...) return U.getModelPivot(...) end
+local loadBuilds    = function(...) return U.loadBuilds(...) end
+local saveBuilds    = function(...) return U.saveBuilds(...) end
+local activatePaste = function(...) return P.activatePaste(...) end
+local excludedBlocks = nil  -- use S.excludedBlocks directly
+
 local V = {}
+
+local function mkCorner(p, r)
+    local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, r or 8); c.Parent = p
+end
+local function mkStroke(p, col, th)
+    local s = Instance.new("UIStroke"); s.Color = col or Color3.fromRGB(55,55,75); s.Thickness = th or 1; s.Parent = p
+end
 
 local previewGui    = nil
 local vpCamera      = nil
@@ -662,7 +679,8 @@ local function openPreviewGui(buildArg)
     closeBtn.MouseButton1Click:Connect(cleanupAndClose)
     loadBtn.MouseButton1Click:Connect(function()
         if not build.anchor then return end
-        for name, _ in pairs(blockChecked) do excludedBlocks[name] = true end
+        S.excludedBlocks = {}
+        for name, _ in pairs(blockChecked) do S.excludedBlocks[name] = true end
         activatePaste(build.blocks, tableToCF(build.anchor), true)
         cleanupAndClose()
     end)
