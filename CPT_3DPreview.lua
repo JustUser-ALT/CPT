@@ -662,7 +662,7 @@ local function openPreviewGui(buildArg)
             vpRotX = vpRotX + delta.Y * 0.5
             updateVPCamera()
         elseif input == hdrTouchId and hdrDragStart and hdrPosStart then
-            local d = input.Position - hdrDragStart
+            local d = Vector2.new(input.Position.X, input.Position.Y) - hdrDragStart
             bg.Position = UDim2.new(
                 hdrPosStart.X.Scale, hdrPosStart.X.Offset + d.X,
                 hdrPosStart.Y.Scale, hdrPosStart.Y.Offset + d.Y
