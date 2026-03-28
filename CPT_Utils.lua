@@ -274,10 +274,20 @@ function U.placeOneScaled(data, nA, sc)
     local relCF = type(data.relCF)=="table" and U.tableToCF(data.relCF) or data.relCF
     local scaledCF = CFrame.new(relCF.Position * sc) * (relCF - relCF.Position)
     local tCF = nA * scaledCF
-    local ok1, bc  = pcall(function() return BrickColor.new(data.brickColor) end)
-    local ok2, mat = pcall(function() return Enum.Material[data.material] end)
-    local brickColor = ok1 and bc  or BrickColor.new(1001)
-    local material   = ok2 and mat or Enum.Material.Plastic
+    -- Handle both BrickColor objects and strings
+    local brickColor, material
+    if typeof(data.brickColor) == "BrickColor" then
+        brickColor = data.brickColor
+    else
+        local ok, bc = pcall(function() return BrickColor.new(data.brickColor) end)
+        brickColor = ok and bc or BrickColor.new(1001)
+    end
+    if typeof(data.material) == "EnumItem" then
+        material = data.material
+    else
+        local ok, mat = pcall(function() return Enum.Material[data.material] end)
+        material = ok and mat or Enum.Material.Plastic
+    end
     safeOffset = safeOffset + 6
     local spawnCF = SAFE_SPAWN * CFrame.new(safeOffset, 0, 0)
     local nb
@@ -339,8 +349,6 @@ function U.placeOneScaled(data, nA, sc)
                     or (data.cpSize or cp.Size)
                 pcall(function() RS.Functions.CommitResize:InvokeServer(nb, {cp, tCF, baseSize * sc}) end)
             else
-                -- Multi-part block without ColorPart (e.g. WindowBlockThin)
-                -- Scale each visible part relative to pivot
                 local nbPivot = U.getModelPivot(nb)
                 local args = {}
                 for _, desc in ipairs(nb:GetDescendants()) do
